@@ -8,6 +8,9 @@ import Loader from "../../main/ui/Loader";
 import {useNavigate, useParams} from "react-router-dom";
 import {LOGIN_PATH} from "../../main/Routing";
 import {RequestLoadingType} from "../../main/bll/appReducer";
+import {InputText} from "primereact/inputtext";
+import {Password} from "primereact/password";
+import {Button} from "primereact/button";
 
 const SetNewPassword = () => {
     const info = useSelector<AppStoreType, string>(state => state.setNewPassword.info)
@@ -28,7 +31,7 @@ const SetNewPassword = () => {
             resetPasswordToken: token as string
         },
         onSubmit: (values) => {
-            dispatch(setNewPasswordTC(values.password, values.resetPasswordToken))
+            dispatch(setNewPasswordTC({password: values.password, token: values.resetPasswordToken}))
             formik.resetForm()
         }
     })
@@ -36,36 +39,23 @@ const SetNewPassword = () => {
         navigate(LOGIN_PATH)
     }, 4000)
 
-    function togglePassword() {
-        const x: any = document.getElementById("setNewPassword");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
-    }
-
     return <>
         {isLoading === 'loading' && <Loader/>}
 
         <div className={cl.description}>To restore access, enter a new password</div>
         <form className={cl.form} onSubmit={formik.handleSubmit}>
-            <input
-                type={"password"}
-                placeholder="set new password"
-                id="setNewPassword"
+            <label className={cl.description}>Password:</label>
+            <Password className={cl.input}
+                toggleMask
                 {...formik.getFieldProps("password")}
             />
             {formik.touched.password && formik.errors.password ?
                 <div style={{color: "red"}}>{formik.errors.password}</div> : null}
-            <label className={cl.description}>Show Password</label>
-            <input type="checkbox" onClick={togglePassword}/>
-            <input
+            <InputText className={cl.input}
                 type={"hidden"}
-                placeholder="set token"
                 {...formik.getFieldProps("resetPasswordToken")}
             />
-            <button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Send</button>
+            <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Send</Button>
         </form>
     </>
 }

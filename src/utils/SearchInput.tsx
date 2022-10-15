@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../main/bll/store";
 import {GetPacksParamsType} from "../main/dal/packsAPI";
 import useDebounce from "../hooks/useDebounce";
-import {setPacksParamsTC} from "../main/bll/packsReducer";
+import {setPacksParams} from "../main/bll/packsReducer";
 
 const SearchInput: React.FC<any> = () => {
 
@@ -16,7 +16,7 @@ const SearchInput: React.FC<any> = () => {
     const searchParams = {...params, packName: value}
 
     useEffect(() => {
-        dispatch(setPacksParamsTC(searchParams))
+        dispatch(setPacksParams({data: searchParams}))
     }, [debouncedValue])
 
     return (

@@ -34,7 +34,7 @@ const Register: React.FC = () => {
             password: ''
         },
         onSubmit: (values) => {
-            dispatch(registerTC(values))
+            dispatch(registerTC({data: values}))
             navigate("/profile")
         }
     })

@@ -8,7 +8,7 @@ export const backendUrl = {
     heroku: 'https://neko-back.herokuapp.com/2.0/'
 }
 export const instance = axios.create({
-    baseURL: backendUrl.local,
+    baseURL: backendUrl.heroku,
     ...settings
 })
 
@@ -33,7 +33,7 @@ export const registerAPI = {
         return instance.put<UpdatedUserType>('auth/me', {name, avatar})
     },
     forgot(email: string) {
-        return instance.post<AxiosResponse<ForgotResponseType>>("auth/forgot", {
+        return instance.post<ForgotResponseType>("auth/forgot", {
             email, from: "test", message: `<div style="background-color: lime; padding: 15px"> 
             password recovery link:<a href='http://localhost:3000/setNewPassword/$token$'>link</a></div>`
         })

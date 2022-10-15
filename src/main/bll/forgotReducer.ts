@@ -1,53 +1,40 @@
-import {ThunkType} from "./store";
 import {registerAPI} from "../dal/authAPI";
 import {errorHandler} from "../../utils/errorHandler";
-import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
+import {setIsLoadingAC} from "./appReducer";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
-
-const FORGOT_PASSWORD = "forgotReducer/FORGOT-PASSWORD"
-
-export const forgotPassword = (data: forgotInitialStateType) => ({
-    type: FORGOT_PASSWORD,
-    payload: {data}
-}) as const
-
-const forgotInitialState: forgotInitialStateType = {
-    info: "",
-    error: ""
-}
-
-const forgotReducer = (state = forgotInitialState, action: ForgotReducerAT): forgotInitialStateType => {
-
-    switch (action.type) {
-        case FORGOT_PASSWORD:
-            return {
-                ...state,
-                ...action.payload.data
-            }
-        default: {
-            return state
-        }
-    }
-}
-
-export default forgotReducer;
-
-
-export const forgotPasswordTC = (email: string): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+export const forgotPasswordTC = createAsyncThunk("forgot/forgot", async (arg: { email: string }, thunkAPI) => {
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    const data = await registerAPI.forgot(arg.email)
     try {
-        const data = await registerAPI.forgot(email)
-        if (data)
-            dispatch(forgotPassword(data.data.data))
-        dispatch(setIsLoadingAC('succeeded'))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        return {info: data.data.info, error: data.data.error}
     } catch (e: any) {
-        errorHandler(e, dispatch)
+        errorHandler(e, thunkAPI.dispatch)
+        thunkAPI.rejectWithValue(null)
     }
-}
+})
+
+const slice = createSlice({
+    name: "forgot",
+    initialState: {
+        info: "",
+        error: ""
+    } as forgotInitialStateType,
+    reducers: {},
+    extraReducers: builder => {
+        builder.addCase(forgotPasswordTC.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.info = action.payload.info
+                state.error = action.payload.error
+            }
+        })
+    }
+})
+
+export const forgotReducer = slice.reducer
 
 export type forgotInitialStateType = {
     info: string
     error: string
 }
-type forgotPasswordAT = ReturnType<typeof forgotPassword>
-export type ForgotReducerAT = forgotPasswordAT | SetIsLoadingAT

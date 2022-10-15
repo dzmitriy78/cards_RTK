@@ -14,6 +14,7 @@ import {InputText} from "primereact/inputtext";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
+import noCover from "../../assets/No_Cover.png";
 
 const Packs = () => {
 
@@ -24,18 +25,18 @@ const Packs = () => {
     const isAuth = useSelector<AppStoreType, boolean>(state => state.login.isAuth)
 
     const [newPackName, setNewPackName] = useState("")
-    const [deckCover, setDeckCover] = useState("https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/299913673_425487332892200_2154598179656547659_n.png?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=x8v8WXJxYq0AX9X5nqW&_nc_ht=scontent-frt3-1.xx&oh=00_AT93CYlHuOzWmpeRjwKf3rqRueHuCDveIcE0z5QNgrN6Lg&oe=6339CCA1")
+    const [deckCover, setDeckCover] = useState(noCover)
 
     useEffect(() => {
         if (!isAuth) {
             navigate(LOGIN_PATH)
         }
-        dispatch(getPacksTC(params))
+        dispatch(getPacksTC({params}))
     }, [params.packName, params.max, params.min, params.user_id])
 
     const createPack = () => {
         if (newPackName)
-            dispatch(addPackTC({cardsPack: {name: newPackName, deckCover}}))
+            dispatch(addPackTC({data: {cardsPack: {name: newPackName, deckCover}}}))
         setNewPackName("")
         setDeckCover("")
     }

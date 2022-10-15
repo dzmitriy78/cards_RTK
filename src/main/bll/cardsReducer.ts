@@ -1,4 +1,4 @@
-import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
+import {setIsLoadingAC} from "./appReducer";
 import {
     CardPacksType,
     cardsAPI,
@@ -94,53 +94,53 @@ const cardsReducer = (state = cardsInitialState, action: CardsReducerAT): CardsI
 export default cardsReducer;
 
 export const getCardsTC = (data: GetCardsParamsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+    dispatch(setIsLoadingAC({isLoading:'loading'}))
     try {
         const res = await cardsAPI.getCards(data)
         dispatch(setCards(res.data))
-        dispatch(setIsLoadingAC('succeeded'))
+        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
     } catch (e) {
         errorHandler(e, dispatch)
     }
 }
 export const createCardTC = (data: CreateCardsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+    dispatch(setIsLoadingAC({isLoading:'loading'}))
     try {
         const res = await cardsAPI.createCard(data)
         dispatch(addCard(res.data))
-        dispatch(setIsLoadingAC('succeeded'))
+        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
     } catch (e) {
         errorHandler(e, dispatch)
     }
 }
 export const deleteCardTC = (id: string): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+    dispatch(setIsLoadingAC({isLoading:'loading'}))
     try {
         await cardsAPI.deleteCard(id)
         dispatch(removeCard(id))
-        dispatch(setIsLoadingAC('succeeded'))
+        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
     } catch (e) {
         errorHandler(e, dispatch)
     }
 }
 export const updateCardTC = (data: UpdateCardParamsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+    dispatch(setIsLoadingAC({isLoading:'loading'}))
     try {
         const res = await cardsAPI.updateCard(data)
         if (res.data)
             dispatch(renovationCard(res.data.updatedCard))
-        dispatch(setIsLoadingAC('succeeded'))
+        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
     } catch (e) {
         errorHandler(e, dispatch)
     }
 }
 export const changeGradeTC = (data: ChangeGradeType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+    dispatch(setIsLoadingAC({isLoading:'loading'}))
     try {
         const res = await cardsAPI.changeGradeCard(data)
         if (res.data)
             dispatch(updateGrade(res.data))
-        dispatch(setIsLoadingAC('succeeded'))
+        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
     } catch (e) {
         errorHandler(e, dispatch)
     }
@@ -169,7 +169,7 @@ type UpdateGradeAT = ReturnType<typeof updateGrade>
 
 export type CardsReducerAT =
     SetCardsAT
-    | SetIsLoadingAT
+
     | CreateCardsAT
     | DeleteCardsAT
     | RenovationCardAT

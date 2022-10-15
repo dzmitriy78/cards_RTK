@@ -6,6 +6,6 @@ export const errorHandler = (e: any, dispatch: Dispatch) => {
         ? e.response.data.error
         : (e.message + ', more details in the console')
     console.log('Error: ' + {...e})
-    dispatch(setError(error))
-    dispatch(setIsLoadingAC('failed'))
+    dispatch(setError({error}))
+    dispatch(setIsLoadingAC({isLoading:'failed'}))
 }

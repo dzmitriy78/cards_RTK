@@ -39,7 +39,7 @@ const Login = () => {
             rememberMe: false
         },
         onSubmit: (values) => {
-            dispatch(loginTC(values))
+            dispatch(loginTC({data: values}))
         }
     })
 

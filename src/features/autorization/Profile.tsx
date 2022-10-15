@@ -32,17 +32,17 @@ const Profile = () => {
     }
     const setUpdateUser = () => {
         setEditName(false)
-        if (newName !== userData.name)
-            dispatch(updateUserTC(newName, ""))
+        if (newName && newName !== userData.name)
+            dispatch(updateUserTC({name: newName, avatar:""}))
     }
 
     const dispatchHandler = (file64: string) => {
-        dispatch(updateUserTC("", file64))
+        dispatch(updateUserTC({name: "", avatar: file64}))
         setEditAva(false)
     }
 
     const errorImgHandler = () => {
-        dispatch(setIsLoadingAC("failed"))
+        dispatch(setIsLoadingAC({isLoading: "failed"}))
         setAva(defaultAva)
     }
 
@@ -73,7 +73,7 @@ const Profile = () => {
                             {userData.name}
                         </div>
                         <div>
-                            {editName && <InputText placeholder={"enter image url"}
+                            {editName && <InputText placeholder={"enter new name"}
                                                     autoFocus={true}
                                                     onChange={changeName}
                                                     defaultValue={userData.name}

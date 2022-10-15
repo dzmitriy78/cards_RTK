@@ -3,7 +3,7 @@ import {useFormik} from "formik";
 import style from "../../styles/Login.module.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
-import {forgotPassword, forgotPasswordTC} from "../../main/bll/forgotReducer";
+import {forgotPasswordTC} from "../../main/bll/forgotReducer";
 import {useNavigate} from "react-router-dom";
 import {LOGIN_PATH} from "../../main/Routing";
 import Loader from "../../main/ui/Loader";
@@ -32,12 +32,12 @@ const Forgot = () => {
             email: ''
         },
         onSubmit: (values) => {
-            dispatch(forgotPasswordTC(values.email))
+            dispatch(forgotPasswordTC({email: values.email}))
             formik.resetForm()
         }
     })
     if (info) setTimeout(() => {
-        dispatch(forgotPassword({info: "", error: ""}))
+        dispatch(forgotPasswordTC.fulfilled({info: "", error: ""}, "requestId", {email: ""}))
         navigate(LOGIN_PATH)
     }, 4000)
     return <>

@@ -15,6 +15,7 @@ import Confirm from "../../utils/ConfirmDialog";
 import {InputText} from "primereact/inputtext";
 import Modal from "../../utils/Modal";
 import defaultCover from "../../assets/defaultCover.png";
+import noCover from "../../assets/No_Cover.png";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
 const PacksTable = () => {
@@ -32,11 +33,11 @@ const PacksTable = () => {
 
 
     const onDeletePack = (id: string) => {
-        dispatch(deletePackTC(id))
+        dispatch(deletePackTC({id}))
     }
     const onUpdatePack = (id: string) => {
         if (newName || newDeckCover)
-            dispatch(updatePackTC(id, newName, newDeckCover))
+            dispatch(updatePackTC({id, newName, newDeckCover}))
         setNewName("")
         setNewDeckCover("")
     }
@@ -46,7 +47,7 @@ const PacksTable = () => {
         const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
 
         const errorImgHandler = () => {
-            dispatch(setIsLoadingAC("failed"))
+            dispatch(setIsLoadingAC({isLoading:"failed"}))
             setIsCoverBroken(true)
         }
         return (
@@ -162,7 +163,7 @@ const PacksTable = () => {
                     />
                     : <img style={{maxWidth: "80px", maxHeight: "60px"}}
                            alt={"no cover"}
-                           src={"https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/299913673_425487332892200_2154598179656547659_n.png?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=x8v8WXJxYq0AX9X5nqW&_nc_ht=scontent-frt3-1.xx&oh=00_AT93CYlHuOzWmpeRjwKf3rqRueHuCDveIcE0z5QNgrN6Lg&oe=6339CCA1"}
+                           src={noCover}
                     />
                 }
             </div>

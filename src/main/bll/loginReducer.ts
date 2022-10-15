@@ -1,80 +1,39 @@
 import {authAPI, LoginParamsType, UserDataType} from "../dal/authAPI"
-import {ThunkType} from "./store";
 import {errorHandler} from "../../utils/errorHandler";
-import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
+import {setIsLoadingAC} from "./appReducer";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const SET_USER_DATA = "loginReducer/SET-USER-DATA"
-
-export const setAuthUserData = (data: LoginInitialStateType) => ({
-    type: SET_USER_DATA,
-    payload: {data}
-}) as const
-
-const loginInitialState: LoginInitialStateType = {
-    isAuth: false,
-    userData: {
-        avatar: "",
-        created: "",
-        email: "",
-        isAdmin: false,
-        name: "",
-        publicCardPacksCount: 0,
-        rememberMe: false,
-        token: "",
-        tokenDeathTime: 0,
-        updated: "",
-        verified: false,
-        __v: 0,
-        _id: ""
-    }
-}
-
-const loginReducer = (state = loginInitialState, action: AuthActionType): LoginInitialStateType => {
-    switch (action.type) {
-        case SET_USER_DATA:
-            return {
-                ...state,
-                isAuth: action.payload.data.isAuth,
-                userData: action.payload.data.userData
-            }
-        default: {
-            return state
-        }
-    }
-}
-export default loginReducer;
-
-export const authMe = (): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+export const authMe = createAsyncThunk("login/authMe", async (arg, thunkAPI) => {
+    //thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    const data = await authAPI.me()
     try {
-        const data = await authAPI.me()
-        if (data)
-            dispatch(setAuthUserData({isAuth: true, userData: data.data}))
+        return {isAuth: true, userData: data.data}
     } catch (e: any) {
-        console.log("Error:" +e.response.data.error)
+        errorHandler(e, thunkAPI.dispatch)
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        return thunkAPI.rejectWithValue(null)
     } finally {
-        dispatch(setIsLoadingAC('succeeded'))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
     }
-}
-
-export const loginTC = (data: LoginParamsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+})
+export const loginTC = createAsyncThunk("login/login", async (arg: { data: LoginParamsType }, thunkAPI) => {
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    const res = await authAPI.login(arg.data)
     try {
-        const res = await authAPI.login(data)
-        if (res.data.email) {
-            dispatch(setAuthUserData({isAuth: true, userData: res.data}))
-            dispatch(setIsLoadingAC('succeeded'))
-        }
+        if (!res.data.error)
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        return {isAuth: true, userData: res.data}
     } catch (e: any) {
-        errorHandler(e, dispatch)
+        errorHandler(e, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue(null)
     }
-}
-
-export const logoutTC = (): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+})
+export const logoutTC = createAsyncThunk("login/logout", async (arg, thunkAPI) => {
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    await authAPI.logout()
     try {
-        await authAPI.logout()
-        dispatch(setAuthUserData({
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        return {
             isAuth: false,
             userData: {
                 avatar: "",
@@ -91,25 +50,58 @@ export const logoutTC = (): ThunkType => async (dispatch) => {
                 __v: 0,
                 _id: ""
             }
-        }))
-        dispatch(setIsLoadingAC('succeeded'))
+        }
     } catch (e: any) {
-        errorHandler(e, dispatch)
+        errorHandler(e, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue(null)
     }
-}
+})
+
+const slice = createSlice({
+    name: "login",
+    initialState: {
+        isAuth: false,
+        userData: {
+            avatar: "",
+            created: "",
+            email: "",
+            isAdmin: false,
+            name: "",
+            publicCardPacksCount: 0,
+            rememberMe: false,
+            token: "",
+            tokenDeathTime: 0,
+            updated: "",
+            verified: false,
+            __v: 0,
+            _id: ""
+        }
+    } as LoginInitialStateType,
+    reducers: {
+        setAuthUserData(state, action: PayloadAction<{ data: LoginInitialStateType }>) {
+            state.userData = action.payload.data.userData
+        }
+    },
+    extraReducers: builder => {
+        builder.addCase(authMe.fulfilled, (state, action) => {
+            state.isAuth = action.payload.isAuth
+            state.userData = action.payload.userData
+        })
+        builder.addCase(loginTC.fulfilled, (state, action) => {
+            state.isAuth = true
+            state.userData = action.payload.userData
+        })
+        builder.addCase(logoutTC.fulfilled, (state, action) => {
+            state.isAuth = false
+            state.userData = action.payload.userData
+        })
+    }
+})
+
+export const loginReducer = slice.reducer
+export const {setAuthUserData} = slice.actions
 
 export type LoginInitialStateType = {
     isAuth: boolean
     userData: UserDataType
-}
-
-export type SetUserDataAT = {
-    type: typeof SET_USER_DATA,
-    payload: AuthPayloadType
-}
-
-export type AuthActionType = SetUserDataAT | SetIsLoadingAT
-
-type AuthPayloadType = {
-    data: LoginInitialStateType
 }

@@ -14,7 +14,7 @@ const Message: React.FC<MessagesPropsType> = ({message}) => {
         if (isLoading === "failed")
             mes.current.show(
                 {life: 4000, severity: 'error', summary: 'Error: ', detail: `${message}`})
-        setTimeout(()=>dispatch(setError(null)), 2000)
+        setTimeout(() => dispatch(setError({error: null})), 2000)
         if (isLoading === "succeeded")
             mes.current?.show(
                 {life: 4000, severity: 'success', summary: 'Success: ', detail: `${message}`})

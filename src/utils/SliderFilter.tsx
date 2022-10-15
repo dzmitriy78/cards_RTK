@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Slider, SliderValueType} from 'primereact/slider';
-import {setPacksParamsTC} from "../main/bll/packsReducer";
+import {setPacksParams} from "../main/bll/packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../main/bll/store";
 import {GetPacksParamsType} from "../main/dal/packsAPI";
@@ -17,7 +17,7 @@ const SliderFilter = () => {
     const max = useSelector<AppStoreType, number>(state => state.packs.maxCardsCount)
     const min = useSelector<AppStoreType, number>(state => state.packs.minCardsCount)
 
-    const [value, setValue] = useState< SliderValueType>([0, 110])
+    const [value, setValue] = useState<SliderValueType>([0, 110])
 
 
     const [first, second] = value as Array<number>
@@ -25,15 +25,15 @@ const SliderFilter = () => {
     const debouncedValue = useDebounce<SliderValueType>(value, 600)
 
     useEffect(() => {
-        dispatch(setPacksParamsTC(myParams))
+        dispatch(setPacksParams({data: myParams}))
     }, [debouncedValue, min, max])
 
     return (
         <div className="slider-demo">
-            <div className="card" >
-                    <div>Range: [{first}, {second}]</div>
-                    <Slider value={value} disabled={isLoading === "loading"}
-                            onChange={(e) => setValue(e.value)} range/>
+            <div className="card">
+                <div>Range: [{first}, {second}]</div>
+                <Slider value={value} disabled={isLoading === "loading"}
+                        onChange={(e) => setValue(e.value)} range/>
             </div>
         </div>
     )

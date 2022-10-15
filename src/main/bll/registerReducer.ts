@@ -1,53 +1,41 @@
-import {ThunkType} from "./store";
 import {registerAPI, RegisterParamsType} from "../dal/authAPI";
 import {authMe} from "./loginReducer";
 import {errorHandler} from "../../utils/errorHandler";
-import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
+import {setIsLoadingAC} from "./appReducer";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
-const SET_REGISTER = "registerReducer/SET-REGISTER"
-
-const setRegister = (data: RegisterInitialStateType) => ({
-    type: SET_REGISTER,
-    payload: {data}
-}) as const
-
-const registerInitialState: RegisterInitialStateType = {
-    name: "",
-    email: "",
-}
-
-const registerReducer = (state = registerInitialState, action: RegisterActionType): RegisterInitialStateType => {
-
-    switch (action.type) {
-        case SET_REGISTER:
-            return {
-                ...state,
-                name: action.payload.data.name,
-                email: action.payload.data.email
-            }
-        default: {
-            return state
-        }
-    }
-}
-
-export default registerReducer;
-
-export const registerTC = (data: RegisterParamsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC('loading'))
+export const registerTC = createAsyncThunk("register/register", async (arg: { data: RegisterParamsType }, thunkAPI) => {
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    const res = await registerAPI.register(arg.data)
     try {
-        const res = await registerAPI.register(data)
-        dispatch(setRegister({email: res.data.addedUser.email, name: res.data.addedUser.name}))
-        dispatch(authMe())
-        dispatch(setIsLoadingAC('succeeded'))
+        // @ts-ignore
+        thunkAPI.dispatch(authMe())
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        return {email: res.data.addedUser.email, name: res.data.addedUser.name}
     } catch (e: any) {
-        errorHandler(e, dispatch)
+        errorHandler(e, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue(null)
     }
-}
+})
+
+const slice = createSlice({
+    name: "register",
+    initialState: {
+        name: "",
+        email: "",
+    } as RegisterInitialStateType,
+    reducers: {},
+    extraReducers: builder => {
+        builder.addCase(registerTC.fulfilled, (state, action) => {
+            state.name = action.payload.name
+            state.email = action.payload.email
+        })
+    }
+})
+
+export const registerReducer = slice.reducer
 
 export type RegisterInitialStateType = {
     name: string
     email: string
 }
-type SetRegisterAT = ReturnType<typeof setRegister>
-export type RegisterActionType = SetRegisterAT | SetIsLoadingAT

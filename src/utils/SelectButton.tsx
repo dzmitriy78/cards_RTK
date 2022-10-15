@@ -3,7 +3,7 @@ import {SelectButton} from 'primereact/selectbutton';
 import {SelectItemOptionsType} from "primereact/selectitem";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../main/bll/store";
-import {setPacksParamsTC} from "../main/bll/packsReducer";
+import {setPacksParams} from "../main/bll/packsReducer";
 import {GetPacksParamsType} from "../main/dal/packsAPI";
 import {RequestLoadingType} from "../main/bll/appReducer";
 
@@ -24,9 +24,9 @@ const SelectButt = () => {
 
     useEffect(() => {
         if (value === "My")
-            dispatch(setPacksParamsTC(myParams))
+            dispatch(setPacksParams({data: myParams}))
         if (value === "All")
-            dispatch(setPacksParamsTC(allParams))
+            dispatch(setPacksParams({data: allParams}))
     }, [value])
 
     return (
