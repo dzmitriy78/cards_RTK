@@ -30,7 +30,7 @@ const Cards = () => {
 
     const createCard = () => {
         if (question)
-            dispatch(createCardTC({card: {cardsPack_id: currentPack._id, question, answer}}))
+            dispatch(createCardTC({data:{card: {cardsPack_id: currentPack._id, question, answer}}}))
         setQuestion("")
         setAnswer("")
     }
@@ -68,7 +68,7 @@ const Cards = () => {
                                         <InputText style={{width: "95%", margin: "5px"}}
                                                    id="question"
                                                    value={question.includes("data:image")
-                                                       ? "*image*"
+                                                       ? ""
                                                        : question}
                                                    onChange={(e) => setQuestion(e.target.value)}/>
                                     <span>Upload an image?</span><UploadFileWithBase64 cb={setQuestion}/>
@@ -77,7 +77,7 @@ const Cards = () => {
 
                                 <InputTextarea style={{width: "95%", margin: "5px"}}
                                                value={answer.includes("data:image")
-                                                   ? "*image*"
+                                                   ? ""
                                                    : answer}
                                                onChange={(e) => setAnswer(e.target.value)}
                                                rows={5}

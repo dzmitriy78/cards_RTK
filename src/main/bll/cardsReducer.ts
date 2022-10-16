@@ -2,149 +2,128 @@ import {setIsLoadingAC} from "./appReducer";
 import {
     CardPacksType,
     cardsAPI,
-    CardsType, ChangeCardGradeResponseType, ChangeGradeType,
-    CreateCardResponseType,
+    CardsType,
+    ChangeCardGradeResponseType,
+    ChangeGradeType,
     CreateCardsType,
     GetCardsParamsType,
-    GetCardsResponseType,
     UpdateCardParamsType
 } from "../dal/packsAPI";
-import {ThunkType} from "./store";
 import {errorHandler} from "../../utils/errorHandler";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const SET_CARDS = "cardReducer/SET-CARDS"
-const CREATE_CARD = "cardReducer/CREATE-CARD"
-const DELETE_CARD = "cardReducer/DELETE-CARD"
-const UPDATE_CARD = "cardReducer/UPDATE-CARD"
-const SET_CARDS_PACK = "cardReducer/SET-CARDS-PACK"
-const UPDATE_GRADE = "cardReducer/UPDATE-GRADE"
-
-export const setCards = (data: GetCardsResponseType) => ({type: SET_CARDS, payload: {data}}) as const
-export const addCard = (data: CreateCardResponseType) => ({type: CREATE_CARD, data}) as const
-export const removeCard = (cardId: string) => ({type: DELETE_CARD, cardId}) as const
-export const renovationCard = (data: CardsType) => ({type: UPDATE_CARD, data}) as const
-export const setCardsPack = (data: CardPacksType) => ({type: SET_CARDS_PACK, payload: {data}}) as const
-export const updateGrade = (data: ChangeCardGradeResponseType) => ({type: UPDATE_GRADE, data}) as const
-
-const cardsInitialState: CardsInitialStateType = {
-    getCardParams: {
-        cardAnswer: "",
-        cardQuestion: "",
-        cardsPack_id: /*"630b326c08095407487d7a75"*/"",
-        min: 0,
-        max: 0,
-        sortCards: "1grade",
-        page: 1,
-        pageCount: 120
-    },
-    cards: [],
-    currentCardsPack: {} as CardPacksType,
-    updatedGrade: {} as ChangeCardGradeResponseType,
-    packUserId: "",
-    page: 0,
-    pageCount: 0,
-    cardsTotalCount: 0,
-    minGrade: 0,
-    maxGrade: 0,
-    token: "",
-    tokenDeathTime: 0
-}
-
-const cardsReducer = (state = cardsInitialState, action: CardsReducerAT): CardsInitialStateType => {
-
-    switch (action.type) {
-        case SET_CARDS:
-            return {
-                ...state,
-                cards: action.payload.data.cards
-            }
-        case CREATE_CARD:
-            return {
-                ...state,
-                cards: [action.data.newCard, ...state.cards]
-            }
-        case DELETE_CARD:
-            return {
-                ...state,
-                cards: state.cards.filter(c => c._id !== action.cardId)
-            }
-        case UPDATE_CARD:
-            return {
-                ...state,
-                cards: state.cards.map(c => c._id === action.data._id
-                    ? {...c, question: action.data.question, answer: action.data.answer}
-                    : c)
-            }
-        case SET_CARDS_PACK:
-            return {
-                ...state,
-                currentCardsPack: action.payload.data
-            }
-        case UPDATE_GRADE:
-            return {
-                ...state,
-                updatedGrade: action.data
-            }
-        default: {
-            return state
+export const getCardsTC = createAsyncThunk("card/getCards",
+    async (arg: { data: GetCardsParamsType }, thunkAPI) => {
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+        const res = await cardsAPI.getCards(arg.data)
+        try {
+            thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+            return res.data
+        } catch (e) {
+            errorHandler(e, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(null)
         }
-    }
-}
+    })
+export const createCardTC = createAsyncThunk("cards/createCard",
+    async (arg: { data: CreateCardsType }, thunkAPI) => {
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+        const res = await cardsAPI.createCard(arg.data)
+        try {
+            thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+            return res.data
+        } catch (e) {
+            errorHandler(e, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(null)
+        }
+    })
+export const deleteCardTC = createAsyncThunk("cards/deleteCard",
+    async (arg: { id: string }, thunkAPI) => {
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+        await cardsAPI.deleteCard(arg.id)
+        try {
+            thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+            return arg.id
+        } catch (e) {
+            errorHandler(e, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(null)
+        }
+    })
+export const updateCardTC = createAsyncThunk("cards/updateCard",
+    async (arg: { data: UpdateCardParamsType }, thunkAPI) => {
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+        const res = await cardsAPI.updateCard(arg.data)
+        try {
+            thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+            return res.data.updatedCard
+        } catch (e) {
+            errorHandler(e, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(null)
+        }
+    })
+export const changeGradeTC = createAsyncThunk("cards/changeGrade",
+    async (arg: { data: ChangeGradeType }, thunkAPI) => {
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+        const res = await cardsAPI.changeGradeCard(arg.data)
+        try {
+            thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+            return res.data
 
-export default cardsReducer;
+        } catch (e) {
+            errorHandler(e, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(null)
+        }
+    })
 
-export const getCardsTC = (data: GetCardsParamsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC({isLoading:'loading'}))
-    try {
-        const res = await cardsAPI.getCards(data)
-        dispatch(setCards(res.data))
-        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
-    } catch (e) {
-        errorHandler(e, dispatch)
+const slice = createSlice({
+    name: "card",
+    initialState: {
+        getCardParams: {
+            cardAnswer: "",
+            cardQuestion: "",
+            cardsPack_id: /*"630b326c08095407487d7a75"*/"",
+            min: 0,
+            max: 0,
+            sortCards: "1grade",
+            page: 1,
+            pageCount: 120
+        },
+        cards: [],
+        currentCardsPack: {} as CardPacksType,
+        updatedGrade: {} as ChangeCardGradeResponseType,
+        packUserId: "",
+        page: 0,
+        pageCount: 0,
+        cardsTotalCount: 0,
+        minGrade: 0,
+        maxGrade: 0,
+        token: "",
+        tokenDeathTime: 0
+    } as CardsInitialStateType,
+    reducers: {
+        setCardsPack(state, action: PayloadAction<{ data: CardPacksType }>) {
+            state.currentCardsPack = action.payload.data
+        }
+    },
+    extraReducers: builder => {
+        builder.addCase(getCardsTC.fulfilled, (state, action) => {
+            state.cards = action.payload.cards
+        })
+        builder.addCase(createCardTC.fulfilled, (state, action) => {
+            state.cards = [action.payload.newCard, ...state.cards]
+        })
+        builder.addCase(deleteCardTC.fulfilled, (state, action) => {
+            state.cards = state.cards.filter(c => c._id !== action.payload)
+        })
+        builder.addCase(updateCardTC.fulfilled, (state, action) => {
+            state.cards = state.cards.map(c => c._id === action.payload._id
+                ? {...c, question: action.payload.question, answer: action.payload.answer}
+                : c)
+        })
     }
-}
-export const createCardTC = (data: CreateCardsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC({isLoading:'loading'}))
-    try {
-        const res = await cardsAPI.createCard(data)
-        dispatch(addCard(res.data))
-        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
-    } catch (e) {
-        errorHandler(e, dispatch)
-    }
-}
-export const deleteCardTC = (id: string): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC({isLoading:'loading'}))
-    try {
-        await cardsAPI.deleteCard(id)
-        dispatch(removeCard(id))
-        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
-    } catch (e) {
-        errorHandler(e, dispatch)
-    }
-}
-export const updateCardTC = (data: UpdateCardParamsType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC({isLoading:'loading'}))
-    try {
-        const res = await cardsAPI.updateCard(data)
-        if (res.data)
-            dispatch(renovationCard(res.data.updatedCard))
-        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
-    } catch (e) {
-        errorHandler(e, dispatch)
-    }
-}
-export const changeGradeTC = (data: ChangeGradeType): ThunkType => async (dispatch) => {
-    dispatch(setIsLoadingAC({isLoading:'loading'}))
-    try {
-        const res = await cardsAPI.changeGradeCard(data)
-        if (res.data)
-            dispatch(updateGrade(res.data))
-        dispatch(setIsLoadingAC({isLoading:'succeeded'}))
-    } catch (e) {
-        errorHandler(e, dispatch)
-    }
-}
+})
+
+export const cardsReducer = slice.reducer
+export const {setCardsPack} = slice.actions
 
 type CardsInitialStateType = {
     getCardParams: GetCardsParamsType
@@ -160,18 +139,3 @@ type CardsInitialStateType = {
     token: string
     tokenDeathTime: number
 }
-type SetCardsAT = ReturnType<typeof setCards>
-type CreateCardsAT = ReturnType<typeof addCard>
-type DeleteCardsAT = ReturnType<typeof removeCard>
-type RenovationCardAT = ReturnType<typeof renovationCard>
-type SetCardsPackAT = ReturnType<typeof setCardsPack>
-type UpdateGradeAT = ReturnType<typeof updateGrade>
-
-export type CardsReducerAT =
-    SetCardsAT
-
-    | CreateCardsAT
-    | DeleteCardsAT
-    | RenovationCardAT
-    | SetCardsPackAT
-    | UpdateGradeAT

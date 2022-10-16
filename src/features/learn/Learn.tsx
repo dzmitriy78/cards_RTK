@@ -120,7 +120,7 @@ const LearnPage = () => {
                         {grades.map((g, i) => (
                             <Button key={'grade-' + i} disabled={isLoading === "loading"}
                                     onClick={() => {
-                                        dispatch(changeGradeTC({grade: i + 1, card_id: card._id}))
+                                        dispatch(changeGradeTC({data: {grade: i + 1, card_id: card._id}}))
                                         onNext()
                                     }}>
                                 {g}

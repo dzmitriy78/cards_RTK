@@ -3,7 +3,8 @@ import {CardPacksType, CreatePacksParamsType, GetPacksParamsType, packsAPI} from
 import {errorHandler} from "../../utils/errorHandler";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export const getPacksTC = createAsyncThunk("packs/getPacks", async (arg: { params: GetPacksParamsType }, thunkAPI) => {
+export const getPacksTC = createAsyncThunk("packs/getPacks",
+    async (arg: { params: GetPacksParamsType }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
     const res = await packsAPI.getPacks(arg.params)
     try {
@@ -14,7 +15,8 @@ export const getPacksTC = createAsyncThunk("packs/getPacks", async (arg: { param
         return thunkAPI.rejectWithValue(null)
     }
 })
-export const addPackTC = createAsyncThunk("packs/addPack", async (arg: { data: CreatePacksParamsType }, thunkAPI) => {
+export const addPackTC = createAsyncThunk("packs/addPack",
+    async (arg: { data: CreatePacksParamsType }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
     const res = await packsAPI.createPacks(arg.data)
     try {
@@ -25,7 +27,8 @@ export const addPackTC = createAsyncThunk("packs/addPack", async (arg: { data: C
         return thunkAPI.rejectWithValue(null)
     }
 })
-export const deletePackTC = createAsyncThunk("packs/deletePack", async (arg: { id: string }, thunkAPI) => {
+export const deletePackTC = createAsyncThunk("packs/deletePack",
+    async (arg: { id: string }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
     await packsAPI.deletePack(arg.id)
     try {
@@ -36,7 +39,8 @@ export const deletePackTC = createAsyncThunk("packs/deletePack", async (arg: { i
         return thunkAPI.rejectWithValue(null)
     }
 })
-export const updatePackTC = createAsyncThunk("packs/updatePack", async (arg: { id: string, newName: string, newDeckCover: string }, thunkAPI) => {
+export const updatePackTC = createAsyncThunk("packs/updatePack",
+    async (arg: { id: string, newName: string, newDeckCover: string }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
     const res = await packsAPI.updatePack({
         cardsPack: {

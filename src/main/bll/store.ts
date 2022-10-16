@@ -5,7 +5,7 @@ import {forgotReducer} from "./forgotReducer";
 import {profileReducer} from "./profileReducer";
 import {appReducer} from "./appReducer";
 import {packsReducer} from "./packsReducer";
-import cardsReducer from "./cardsReducer";
+import {cardsReducer} from "./cardsReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {registerReducer} from "./registerReducer";
 import {setNewPasswordReducer} from "./setNewPasswordReducer";

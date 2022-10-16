@@ -47,7 +47,7 @@ const PacksTable = () => {
         const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
 
         const errorImgHandler = () => {
-            dispatch(setIsLoadingAC({isLoading:"failed"}))
+            dispatch(setIsLoadingAC({isLoading: "failed"}))
             setIsCoverBroken(true)
         }
         return (
@@ -57,8 +57,8 @@ const PacksTable = () => {
                         title={"learn"}
                         disabled={isLoading === "loading" || rowData.cardsCount === 0}
                         onClick={() => {
-                            dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
-                            dispatch(setCardsPack(currentPack[0]))
+                            dispatch(getCardsTC({data: {...params, cardsPack_id: rowData._id}}))
+                            dispatch(setCardsPack({data: currentPack[0]}))
                             navigate(LEARN_PATH)
                         }}
                 />
@@ -66,7 +66,7 @@ const PacksTable = () => {
                     myName === rowData.user_name
                     && <Modal icon={"pi pi-pencil"}
                               className="p-button-rounded p-button-success mr-2"
-                              title={`Edit pack ${currentPack[0].name}`}
+                              title={`Edit pack "${currentPack[0].name}"`}
                               disabled={isLoading === "loading"}
                               callback={() => onUpdatePack(rowData._id)}>
                         <form>
@@ -117,8 +117,8 @@ const PacksTable = () => {
         return (
             <div style={{width: '25vw', overflow: 'hidden', cursor: "pointer"}} onClick={() => {
                 if (isLoading !== "loading") {
-                    dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
-                    dispatch(setCardsPack(currentPack[0]))
+                    dispatch(getCardsTC({data: {...params, cardsPack_id: rowData._id}}))
+                    dispatch(setCardsPack({data: currentPack[0]}))
                     navigate(CARDS_PATH)
                 }
             }
