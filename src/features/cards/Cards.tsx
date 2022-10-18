@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import cl from "../../styles/Packs.module.scss"
 import {createCardTC} from "../../main/bll/cardsReducer";
-import {CardPacksType, CardsType} from "../../main/dal/packsAPI";
 import CardsList from "./CardsList";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom";
@@ -11,7 +10,6 @@ import {PACKS_PATH} from "../../main/Routing";
 import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {InputTextarea} from "primereact/inputtextarea";
-import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 import defaultCover from "../../assets/defaultCover.png";
@@ -20,17 +18,17 @@ const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
     const navigate = useNavigate()
 
-    const currentPack = useSelector<AppStoreType, CardPacksType>(state => state.cards.currentCardsPack)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
-    const cards = useSelector<AppStoreType, CardsType[] | []>(state => state.cards.cards)
-    const myName = useSelector<AppStoreType, string>(state => state.login.userData.name)
+    const currentPack = useAppSelector(state => state.cards.currentCardsPack)
+    const isLoading = useAppSelector(state => state.app.isLoading)
+    const cards = useAppSelector(state => state.cards.cards)
+    const myName = useAppSelector(state => state.login.userData.name)
 
     const [question, setQuestion] = useState("")
     const [answer, setAnswer] = useState("")
 
     const createCard = () => {
         if (question)
-            dispatch(createCardTC({data:{card: {cardsPack_id: currentPack._id, question, answer}}}))
+            dispatch(createCardTC({data: {card: {cardsPack_id: currentPack._id, question, answer}}}))
         setQuestion("")
         setAnswer("")
     }

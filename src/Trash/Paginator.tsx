@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Paginator} from 'primereact/paginator';
 import '../styles/App.css';
 import {useSelector} from "react-redux";
-import {AppStoreType} from "../main/bll/store";
+import {RootState} from "../main/bll/store";
 
 const Pagination = () => {
 
-    const totalCount = useSelector<AppStoreType, number>(state => state.packs.cardPacksTotalCount)
+    const totalCount = useSelector<RootState, number>(state => state.packs.cardPacksTotalCount)
     const [basicFirst, setBasicFirst] = useState(0)
     const [basicRows, setBasicRows] = useState(10)
 

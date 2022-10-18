@@ -2,16 +2,14 @@ import React, {useEffect, useState} from 'react';
 import cl from "../../styles/Packs.module.scss";
 import PackFilter from "./PackFilter";
 import PacksTable from "./PacksTable";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {addPackTC, getPacksTC} from "../../main/bll/packsReducer";
-import {GetPacksParamsType} from "../../main/dal/packsAPI";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom";
 import {LOGIN_PATH, PROFILE_PATH} from "../../main/Routing";
 import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
-import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 import noCover from "../../assets/No_Cover.png";
@@ -20,9 +18,9 @@ const Packs = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const navigate = useNavigate()
-    const params = useSelector<AppStoreType, GetPacksParamsType>(state => state.packs.getPacksParams)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
-    const isAuth = useSelector<AppStoreType, boolean>(state => state.login.isAuth)
+    const params = useAppSelector(state => state.packs.getPacksParams)
+    const isLoading = useAppSelector(state => state.app.isLoading)
+    const isAuth = useAppSelector(state => state.login.isAuth)
 
     const [newPackName, setNewPackName] = useState("")
     const [deckCover, setDeckCover] = useState(noCover)

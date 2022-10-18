@@ -6,8 +6,8 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 export const getPacksTC = createAsyncThunk("packs/getPacks",
     async (arg: { params: GetPacksParamsType }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const res = await packsAPI.getPacks(arg.params)
     try {
+        const res = await packsAPI.getPacks(arg.params)
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return res.data
     } catch (e: any) {
@@ -18,8 +18,8 @@ export const getPacksTC = createAsyncThunk("packs/getPacks",
 export const addPackTC = createAsyncThunk("packs/addPack",
     async (arg: { data: CreatePacksParamsType }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const res = await packsAPI.createPacks(arg.data)
     try {
+        const res = await packsAPI.createPacks(arg.data)
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return res.data
     } catch (e: any) {
@@ -30,8 +30,8 @@ export const addPackTC = createAsyncThunk("packs/addPack",
 export const deletePackTC = createAsyncThunk("packs/deletePack",
     async (arg: { id: string }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    await packsAPI.deletePack(arg.id)
     try {
+        await packsAPI.deletePack(arg.id)
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return arg.id
     } catch (e: any) {

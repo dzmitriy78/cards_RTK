@@ -1,21 +1,20 @@
 import React from 'react';
 import {useFormik} from "formik";
 import style from "../../styles/Login.module.scss";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import cl from "../../styles/Login.module.scss";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {forgotPasswordTC} from "../../main/bll/forgotReducer";
 import {useNavigate} from "react-router-dom";
 import {LOGIN_PATH} from "../../main/Routing";
 import Loader from "../../main/ui/Loader";
-import {RequestLoadingType} from "../../main/bll/appReducer";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import cl from "../../styles/Login.module.scss";
 
 const Forgot = () => {
 
-    const info = useSelector<AppStoreType, string>(state => state.forgot.info)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>((state) => state.app.isLoading)
+    const info = useAppSelector(state => state.forgot.info)
+    const isLoading = useAppSelector((state) => state.app.isLoading)
     const dispatch = useDispatch<DispatchType>()
     const navigate = useNavigate()
     const formik = useFormik({

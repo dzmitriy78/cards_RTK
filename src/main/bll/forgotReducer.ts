@@ -5,8 +5,8 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 export const forgotPasswordTC = createAsyncThunk("forgot/forgot", async (arg: { email: string }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const data = await registerAPI.forgot(arg.email)
     try {
+        const data = await registerAPI.forgot(arg.email)
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return {info: data.data.info, error: data.data.error}
     } catch (e: any) {

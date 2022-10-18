@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react'
-import {useSelector} from "react-redux"
-import {AppStoreType} from "../bll/store"
-import {LoginResponseType} from "../dal/authAPI"
+import {useAppSelector} from "../bll/store"
 import {useNavigate} from "react-router-dom"
 import {PROFILE_PATH} from "../Routing"
 import cl from "../../styles/Login.module.scss"
 
 const Welcome = () => {
-    const userData = useSelector<AppStoreType, LoginResponseType>(state => state.login.userData)
+    const userData = useAppSelector(state => state.login.userData)
     const navigate = useNavigate()
 
     useEffect(() => {

@@ -5,8 +5,8 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 export const setNewPasswordTC = createAsyncThunk("setNewPassword/setNewPassword", async (arg: { password: string, token: string }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const res = await registerAPI.setNewPassword(arg.password, arg.token)
     try {
+        const res = await registerAPI.setNewPassword(arg.password, arg.token)
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return {info: res.data.info, error: res.data.error}
     } catch (e: any) {

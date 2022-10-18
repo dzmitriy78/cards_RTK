@@ -1,12 +1,12 @@
 import React, {useEffect, useRef} from 'react';
 import {Toast} from "primereact/toast";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../bll/store";
-import {RequestLoadingType, setError} from "../bll/appReducer";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../bll/store";
+import {setError} from "../bll/appReducer";
 
 const Message: React.FC<MessagesPropsType> = ({message}) => {
 
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
+    const isLoading = useAppSelector(state => state.app.isLoading)
     const dispatch = useDispatch<DispatchType>()
     const mes: React.MutableRefObject<any> = useRef(null);
 

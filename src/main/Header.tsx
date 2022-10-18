@@ -3,14 +3,14 @@ import {NavLink, useNavigate} from "react-router-dom"
 import {FORGOT_PATH, LOGIN_PATH, PACKS_PATH, PROFILE_PATH, REGISTER_PATH} from "./Routing"
 import cl from "../styles/Header.module.scss"
 import {logoutTC} from "./bll/loginReducer"
-import {useDispatch, useSelector} from "react-redux"
-import {AppStoreType, DispatchType} from "./bll/store"
+import {useDispatch} from "react-redux"
+import {DispatchType, useAppSelector} from "./bll/store"
 import {Button} from "primereact/button"
 
 
 const Header = () => {
 
-    const isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
+    const isAuth = useAppSelector((state) => state.login.isAuth)
     const navigate = useNavigate()
     const dispatch = useDispatch<DispatchType>()
 
@@ -21,7 +21,6 @@ const Header = () => {
         navigate(LOGIN_PATH)
     }
     const logoutHandler = () => {
-
         dispatch(logoutTC())
         navigate(LOGIN_PATH)
     }
@@ -40,12 +39,12 @@ const Header = () => {
             {show && <NavLink className={setActive} to={PROFILE_PATH}>profile</NavLink>}
             {show && <NavLink className={setActive} to={PACKS_PATH}>packs</NavLink>}
             {isAuth
-                ?<Button
+                ? <Button
                     icon="pi pi-sign-out"
                     className={cl.btn}
                     onClick={logoutHandler}>Sign out
                 </Button>
-                :<Button
+                : <Button
                     icon="pi pi-sign-in"
                     className={cl.btn}
                     onClick={loginHandler}>Sign in

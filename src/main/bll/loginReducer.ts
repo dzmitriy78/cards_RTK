@@ -4,22 +4,20 @@ import {setIsLoadingAC} from "./appReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export const authMe = createAsyncThunk("login/authMe", async (arg, thunkAPI) => {
-    //thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const data = await authAPI.me()
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
     try {
+    const data = await authAPI.me()
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return {isAuth: true, userData: data.data}
     } catch (e: any) {
-        errorHandler(e, thunkAPI.dispatch)
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading:'failed'}))
         return thunkAPI.rejectWithValue(null)
-    } finally {
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
     }
 })
 export const loginTC = createAsyncThunk("login/login", async (arg: { data: LoginParamsType }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const res = await authAPI.login(arg.data)
     try {
+        const res = await authAPI.login(arg.data)
         if (!res.data.error)
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return {isAuth: true, userData: res.data}
@@ -30,8 +28,8 @@ export const loginTC = createAsyncThunk("login/login", async (arg: { data: Login
 })
 export const logoutTC = createAsyncThunk("login/logout", async (arg, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    await authAPI.logout()
     try {
+        await authAPI.logout()
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return {
             isAuth: false,

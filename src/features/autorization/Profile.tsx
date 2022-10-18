@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {LOGIN_PATH, REGISTER_PATH} from "../../main/Routing";
 import {NavLink} from "react-router-dom";
 import {updateUserTC} from "../../main/bll/profileReducer";
 import Loader from "../../main/ui/Loader";
-import {RequestLoadingType, setIsLoadingAC} from "../../main/bll/appReducer";
-import {UserDataType} from "../../main/dal/authAPI";
+import {setIsLoadingAC} from "../../main/bll/appReducer";
 import cl from "./../../styles/Profile.module.scss"
 import moment from "moment";
 import {InputText} from "primereact/inputtext";
@@ -17,9 +16,9 @@ import {Button} from "primereact/button";
 
 
 const Profile = () => {
-    const isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
-    const userData = useSelector<AppStoreType, UserDataType>((state) => state.login.userData)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>((state) => state.app.isLoading)
+    const isAuth = useAppSelector((state) => state.login.isAuth)
+    const userData = useAppSelector((state) => state.login.userData)
+    const isLoading = useAppSelector((state) => state.app.isLoading)
     const dispatch = useDispatch<DispatchType>()
 
     const [editName, setEditName] = useState(false)
@@ -33,7 +32,7 @@ const Profile = () => {
     const setUpdateUser = () => {
         setEditName(false)
         if (newName && newName !== userData.name)
-            dispatch(updateUserTC({name: newName, avatar:""}))
+            dispatch(updateUserTC({name: newName, avatar: ""}))
     }
 
     const dispatchHandler = (file64: string) => {

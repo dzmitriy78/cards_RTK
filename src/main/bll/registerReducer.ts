@@ -6,9 +6,8 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 export const registerTC = createAsyncThunk("register/register", async (arg: { data: RegisterParamsType }, thunkAPI) => {
     thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
-    const res = await registerAPI.register(arg.data)
     try {
-        // @ts-ignore
+        const res = await registerAPI.register(arg.data)
         thunkAPI.dispatch(authMe())
         thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
         return {email: res.data.addedUser.email, name: res.data.addedUser.name}

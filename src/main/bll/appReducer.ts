@@ -1,10 +1,9 @@
 import {authMe} from "./loginReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-
 export const initializeAppTC = createAsyncThunk("app/initialize", async (arg, thunkAPI) => {
-    await thunkAPI.dispatch(authMe())
     try {
+        await thunkAPI.dispatch(authMe())
         return true
     } catch (e) {
         return thunkAPI.rejectWithValue(null)

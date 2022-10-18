@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import cl from "./../../styles/Learn.module.scss"
 import {useNavigate} from "react-router-dom";
 import {Button} from "primereact/button";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {CardsType} from "../../main/dal/packsAPI";
 import {changeGradeTC} from "../../main/bll/cardsReducer";
 import {CARDS_PATH} from "../../main/Routing";
-import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
 
 const grades = ['did not know', 'forgot', 'long thought', 'confused', 'knew'];
@@ -30,9 +29,9 @@ const LearnPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<DispatchType>()
 
-    const cards = useSelector<AppStoreType, CardsType[]>(state => state.cards.cards)
-    const _id = useSelector<AppStoreType, string>(state => state.cards.currentCardsPack._id)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
+    const cards = useAppSelector(state => state.cards.cards)
+    const _id = useAppSelector(state => state.cards.currentCardsPack._id)
+    const isLoading = useAppSelector(state => state.app.isLoading)
 
     const [isChecked, setIsChecked] = useState<boolean>(false)
     const [first, setFirst] = useState<boolean>(true)

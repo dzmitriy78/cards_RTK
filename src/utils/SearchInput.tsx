@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {InputText} from 'primereact/inputtext';
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../main/bll/store";
-import {GetPacksParamsType} from "../main/dal/packsAPI";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../main/bll/store";
 import useDebounce from "../hooks/useDebounce";
 import {setPacksParams} from "../main/bll/packsReducer";
 
 const SearchInput: React.FC<any> = () => {
 
     const dispatch = useDispatch<DispatchType>()
-    const params = useSelector<AppStoreType, GetPacksParamsType>(state => state.packs.getPacksParams)
+    const params = useAppSelector(state => state.packs.getPacksParams)
     const [value, setValue] = useState('');
 
     const debouncedValue = useDebounce<string>(value, 600)

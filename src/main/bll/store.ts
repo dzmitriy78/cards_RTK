@@ -1,5 +1,5 @@
-import {AnyAction, combineReducers} from "redux";
-import thunkMiddleware, {ThunkAction, ThunkDispatch} from "redux-thunk"
+import {combineReducers} from "redux";
+import thunkMiddleware from "redux-thunk"
 import {loginReducer} from "./loginReducer";
 import {forgotReducer} from "./forgotReducer";
 import {profileReducer} from "./profileReducer";
@@ -9,6 +9,7 @@ import {cardsReducer} from "./cardsReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {registerReducer} from "./registerReducer";
 import {setNewPasswordReducer} from "./setNewPasswordReducer";
+import {TypedUseSelectorHook, useSelector} from "react-redux";
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -28,8 +29,7 @@ const store = configureStore({
 
 export default store
 
-export type RootReducerType = typeof rootReducer
-export type AppStoreType = ReturnType<RootReducerType>
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
-export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, AppStoreType, unknown, any>
-export type DispatchType = ThunkDispatch<AppStoreType, unknown, AnyAction>
+export type RootState = ReturnType<typeof store.getState>
+export type DispatchType = typeof store.dispatch

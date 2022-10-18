@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import {CardPacksType, GetCardsParamsType} from "../../main/dal/packsAPI";
 import {deletePackTC, updatePackTC} from "../../main/bll/packsReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {Button} from "primereact/button";
-import {RequestLoadingType, setIsLoadingAC} from "../../main/bll/appReducer";
+import {setIsLoadingAC} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
 import {CARDS_PATH, LEARN_PATH} from "../../main/Routing";
 import {getCardsTC, setCardsPack} from "../../main/bll/cardsReducer";
@@ -21,11 +20,11 @@ import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 const PacksTable = () => {
 
     const dispatch = useDispatch<DispatchType>()
-    const cardPacks = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
-    const totalCount = useSelector<AppStoreType, number>(state => state.packs.cardPacksTotalCount)
-    const params = useSelector<AppStoreType, GetCardsParamsType>(state => state.cards.getCardParams)
-    const myName = useSelector<AppStoreType, string>(state => state.login.userData.name)
+    const cardPacks = useAppSelector(state => state.packs.cardPacks)
+    const isLoading = useAppSelector(state => state.app.isLoading)
+    const totalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
+    const params = useAppSelector(state => state.cards.getCardParams)
+    const myName = useAppSelector(state => state.login.userData.name)
     const navigate = useNavigate()
 
     const [newName, setNewName] = useState("")

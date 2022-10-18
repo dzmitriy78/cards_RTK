@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
-import {CardsType} from "../../main/dal/packsAPI";
-import {RequestLoadingType} from "../../main/bll/appReducer";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {deleteCardTC, updateCardTC} from "../../main/bll/cardsReducer";
@@ -16,9 +14,9 @@ import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
 const CardsList = () => {
     const dispatch = useDispatch<DispatchType>()
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
-    const cards = useSelector<AppStoreType, CardsType[] | []>(state => state.cards.cards)
-    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
+    const isLoading = useAppSelector(state => state.app.isLoading)
+    const cards = useAppSelector(state => state.cards.cards)
+    const myId = useAppSelector(state => state.login.userData._id)
 
     const [newQuestion, setNewQuestion] = useState("")
     const [newAnswer, setNewAnswer] = useState("")

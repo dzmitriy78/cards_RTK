@@ -1,19 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {SelectButton} from 'primereact/selectbutton';
 import {SelectItemOptionsType} from "primereact/selectitem";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "../main/bll/store";
+import {useDispatch} from "react-redux";
+import {DispatchType, useAppSelector} from "../main/bll/store";
 import {setPacksParams} from "../main/bll/packsReducer";
-import {GetPacksParamsType} from "../main/dal/packsAPI";
-import {RequestLoadingType} from "../main/bll/appReducer";
 
 const SelectButt = () => {
 
     const dispatch = useDispatch<DispatchType>()
-    const params = useSelector<AppStoreType, GetPacksParamsType>(state => state.packs.getPacksParams)
-    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
-    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
+    const params = useAppSelector(state => state.packs.getPacksParams)
+    const myId = useAppSelector(state => state.login.userData._id)
+    const userId = useAppSelector(state => state.packs.getPacksParams.user_id)
+    const isLoading = useAppSelector(state => state.app.isLoading)
 
     const firstValue = myId === userId ? "My" : "All"
     const [value, setValue] = useState<string>(firstValue)

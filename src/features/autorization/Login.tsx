@@ -2,13 +2,12 @@ import React from 'react';
 import {useFormik} from "formik";
 import cl from "../../styles/Login.module.scss"
 import {loginTC} from "../../main/bll/loginReducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {NavLink} from "react-router-dom";
-import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {FORGOT_PATH, REGISTER_PATH} from "../../main/Routing";
 import Loader from "../../main/ui/Loader";
 import Welcome from "../../main/ui/Welcome";
-import {RequestLoadingType} from "../../main/bll/appReducer";
 import {InputText} from "primereact/inputtext";
 import {Checkbox} from "primereact/checkbox";
 import {Button} from "primereact/button";
@@ -17,8 +16,8 @@ import {Password} from "primereact/password";
 const Login = () => {
 
     const dispatch = useDispatch<DispatchType>()
-    const isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>((state) => state.app.isLoading)
+    const isAuth = useAppSelector((state) => state.login.isAuth)
+    const isLoading = useAppSelector((state) => state.app.isLoading)
 
     const formik = useFormik({
         validate: (values) => {
