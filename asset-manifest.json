@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/cards_RTK/static/css/main.0e498e6d.css",
+    "main.js": "/cards_RTK/static/js/main.ffe0f6f9.js",
+    "static/js/496.f65518cb.chunk.js": "/cards_RTK/static/js/496.f65518cb.chunk.js",
+    "static/media/primeicons.svg": "/cards_RTK/static/media/primeicons.e1441b135b3ca9ad643c.svg",
+    "static/media/Education-Wallpaper.jpg": "/cards_RTK/static/media/Education-Wallpaper.88a67910a367c30a5811.jpg",
+    "static/media/user.png": "/cards_RTK/static/media/user.4ce1ce10ce20ffcefb44.png",
+    "static/media/primeicons.eot": "/cards_RTK/static/media/primeicons.d44157bdfa026dc877af.eot",
+    "static/media/primeicons.woff": "/cards_RTK/static/media/primeicons.10d3152104f2208ac82a.woff",
+    "static/media/primeicons.ttf": "/cards_RTK/static/media/primeicons.ea5358601d0a3fd6670b.ttf",
+    "static/media/No_Cover.png": "/cards_RTK/static/media/No_Cover.aa4b62fe726cacce6e31.png",
+    "static/media/primeicons.woff2": "/cards_RTK/static/media/primeicons.78172950b335ccdb94e2.woff2",
+    "index.html": "/cards_RTK/index.html",
+    "main.0e498e6d.css.map": "/cards_RTK/static/css/main.0e498e6d.css.map",
+    "main.ffe0f6f9.js.map": "/cards_RTK/static/js/main.ffe0f6f9.js.map",
+    "496.f65518cb.chunk.js.map": "/cards_RTK/static/js/496.f65518cb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0e498e6d.css",
+    "static/js/main.ffe0f6f9.js"
+  ]
+}
