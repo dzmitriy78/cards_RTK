@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {SelectButton} from 'primereact/selectbutton';
 import {SelectItemOptionsType} from "primereact/selectitem";
 import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../main/bll/store";
 import {setPacksParams} from "../main/bll/packsReducer";
+import {useUpdateEffect} from "ahooks/es";
 
 const SelectButt = () => {
 
@@ -20,7 +21,7 @@ const SelectButt = () => {
     const myParams = {...params, user_id: myId}
     const allParams = {...params, user_id: ""}
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         if (value === "My")
             dispatch(setPacksParams({data: myParams}))
         if (value === "All")

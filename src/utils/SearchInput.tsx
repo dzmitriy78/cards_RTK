@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../main/bll/store";
 import useDebounce from "../hooks/useDebounce";
 import {setPacksParams} from "../main/bll/packsReducer";
+import {useUpdateEffect} from "ahooks/es";
 
 const SearchInput: React.FC<any> = () => {
 
@@ -14,7 +15,7 @@ const SearchInput: React.FC<any> = () => {
     const debouncedValue = useDebounce<string>(value, 600)
     const searchParams = {...params, packName: value}
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         dispatch(setPacksParams({data: searchParams}))
     }, [debouncedValue])
 

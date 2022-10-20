@@ -71,7 +71,7 @@ const slice = createSlice({
             max: 0,
             sortPacks: "0created",
             page: 1,
-            pageCount: 200,
+            pageCount: 100,
             user_id: /*"62d013204d4a530a949a8238"*/ ""
         },
         page: 0,

@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Slider, SliderValueType} from 'primereact/slider';
 import {setPacksParams} from "../main/bll/packsReducer";
 import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../main/bll/store";
 import useDebounce from "../hooks/useDebounce";
 import "./../styles/App.css"
-
+import {useUpdateEffect} from "ahooks/es";
 
 const SliderFilter = () => {
-
     const dispatch = useDispatch<DispatchType>()
     const params = useAppSelector(state => state.packs.getPacksParams)
     const isLoading = useAppSelector(state => state.app.isLoading)
@@ -22,7 +21,7 @@ const SliderFilter = () => {
     const myParams = {...params, min: first, max: second}
     const debouncedValue = useDebounce<SliderValueType>(value, 600)
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         dispatch(setPacksParams({data: myParams}))
     }, [debouncedValue, min, max])
 
