@@ -6,11 +6,11 @@ import useDebounce from "../hooks/useDebounce";
 import {setPacksParams} from "../main/bll/packsReducer";
 import {useUpdateEffect} from "ahooks/es";
 
-const SearchInput: React.FC<any> = () => {
+const SearchInput: React.FC = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const params = useAppSelector(state => state.packs.getPacksParams)
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState('')
 
     const debouncedValue = useDebounce<string>(value, 600)
     const searchParams = {...params, packName: value}

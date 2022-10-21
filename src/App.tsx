@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import './styles/App.css';
-import Main from "./main/Main";
+import Main from "./main/ui/Main";
 import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "./main/bll/store";
-import Loader from "./main/ui/Loader";
+import Loader from "./utils/Loader";
 import {initializeAppTC} from "./main/bll/appReducer";
 import Message from "./main/ui/Messages";
 

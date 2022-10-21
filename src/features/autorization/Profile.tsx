@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../../main/bll/store";
-import {LOGIN_PATH, REGISTER_PATH} from "../../main/Routing";
+import {LOGIN_PATH, REGISTER_PATH} from "../../main/ui/Routing";
 import {NavLink} from "react-router-dom";
 import {updateUserTC} from "../../main/bll/profileReducer";
-import Loader from "../../main/ui/Loader";
-import {setIsLoadingAC} from "../../main/bll/appReducer";
+import Loader from "../../utils/Loader";
+import {setIsLoadingAC, Status} from "../../main/bll/appReducer";
 import cl from "./../../styles/Profile.module.scss"
 import moment from "moment";
 import {InputText} from "primereact/inputtext";
@@ -15,7 +15,7 @@ import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 import {Button} from "primereact/button";
 
 
-const Profile = () => {
+const Profile: React.FC = () => {
     const isAuth = useAppSelector((state) => state.login.isAuth)
     const userData = useAppSelector((state) => state.login.userData)
     const isLoading = useAppSelector((state) => state.app.isLoading)
@@ -41,14 +41,14 @@ const Profile = () => {
     }
 
     const errorImgHandler = () => {
-        dispatch(setIsLoadingAC({isLoading: "failed"}))
+        dispatch(setIsLoadingAC({isLoading: Status.ERROR}))
         setAva(defaultAva)
     }
 
     return (
         <>
             {ava === defaultAva && <Message message={'Image is corrupted, choose another'}/>}
-            {isLoading === 'loading' && <Loader/>}
+            {isLoading === Status.LOADING && <Loader/>}
             {isAuth
                 ? <div className={cl.rootProfile}>
                     <div>

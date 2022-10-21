@@ -6,12 +6,13 @@ import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {forgotPasswordTC} from "../../main/bll/forgotReducer";
 import {useNavigate} from "react-router-dom";
-import {LOGIN_PATH} from "../../main/Routing";
-import Loader from "../../main/ui/Loader";
+import {LOGIN_PATH} from "../../main/ui/Routing";
+import Loader from "../../utils/Loader";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
+import {Status} from "../../main/bll/appReducer";
 
-const Forgot = () => {
+const Forgot: React.FC = () => {
 
     const info = useAppSelector(state => state.forgot.info)
     const isLoading = useAppSelector((state) => state.app.isLoading)
@@ -40,7 +41,7 @@ const Forgot = () => {
         navigate(LOGIN_PATH)
     }, 4000)
     return <>
-        {isLoading === 'loading' && <Loader/>}
+        {isLoading === Status.LOADING && <Loader/>}
         {info && <div className={cl.description}>Password recovery information has been sent to the email address
             provided</div>}
 
@@ -55,7 +56,7 @@ const Forgot = () => {
                     />
                     {formik.touched.email && formik.errors.email ?
                         <div style={{color: "red"}}>{formik.errors.email}</div> : null}
-                    <Button type={'submit'} className={style.button} disabled={isLoading === 'loading'}>Send</Button>
+                    <Button type={'submit'} className={style.button} disabled={isLoading === Status.LOADING}>Send</Button>
                 </form>
             </div>}
     </>

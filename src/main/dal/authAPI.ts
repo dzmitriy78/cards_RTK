@@ -69,7 +69,7 @@ export type LoginResponseType = {
     error?: string
     in?: string
 }
-export type RegisterResponseType = {
+type RegisterResponseType = {
     addedUser: {
         _id: string
         email: string
@@ -103,11 +103,11 @@ export type UpdatedUserType = {
     token: string
     tokenDeathTime: number
 }
-export type ForgotResponseType = {
+type ForgotResponseType = {
     info: string
     error: string
 }
-export type SetNewPasswordResponseType = {
+type SetNewPasswordResponseType = {
     info: string
     error: string
 }

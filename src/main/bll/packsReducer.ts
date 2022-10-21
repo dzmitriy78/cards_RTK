@@ -1,14 +1,14 @@
-import {setIsLoadingAC} from "./appReducer";
+import {setIsLoadingAC, Status} from "./appReducer";
 import {CardPacksType, CreatePacksParamsType, GetPacksParamsType, packsAPI} from "../dal/packsAPI";
 import {errorHandler} from "../../utils/errorHandler";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export const getPacksTC = createAsyncThunk("packs/getPacks",
     async (arg: { params: GetPacksParamsType }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         const res = await packsAPI.getPacks(arg.params)
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return res.data
     } catch (e: any) {
         errorHandler(e, thunkAPI.dispatch)
@@ -17,10 +17,10 @@ export const getPacksTC = createAsyncThunk("packs/getPacks",
 })
 export const addPackTC = createAsyncThunk("packs/addPack",
     async (arg: { data: CreatePacksParamsType }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         const res = await packsAPI.createPacks(arg.data)
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return res.data
     } catch (e: any) {
         errorHandler(e, thunkAPI.dispatch)
@@ -29,10 +29,10 @@ export const addPackTC = createAsyncThunk("packs/addPack",
 })
 export const deletePackTC = createAsyncThunk("packs/deletePack",
     async (arg: { id: string }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         await packsAPI.deletePack(arg.id)
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return arg.id
     } catch (e: any) {
         errorHandler(e, thunkAPI.dispatch)
@@ -41,7 +41,7 @@ export const deletePackTC = createAsyncThunk("packs/deletePack",
 })
 export const updatePackTC = createAsyncThunk("packs/updatePack",
     async (arg: { id: string, newName: string, newDeckCover: string }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     const res = await packsAPI.updatePack({
         cardsPack: {
             _id: arg.id,
@@ -50,7 +50,7 @@ export const updatePackTC = createAsyncThunk("packs/updatePack",
         }
     })
     try {
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return {
             id: res.data.updatedCardsPack._id,
             name: res.data.updatedCardsPack.name,

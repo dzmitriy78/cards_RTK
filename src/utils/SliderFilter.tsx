@@ -6,8 +6,9 @@ import {DispatchType, useAppSelector} from "../main/bll/store";
 import useDebounce from "../hooks/useDebounce";
 import "./../styles/App.css"
 import {useUpdateEffect} from "ahooks/es";
+import {Status} from "../main/bll/appReducer";
 
-const SliderFilter = () => {
+const SliderFilter: React.FC = () => {
     const dispatch = useDispatch<DispatchType>()
     const params = useAppSelector(state => state.packs.getPacksParams)
     const isLoading = useAppSelector(state => state.app.isLoading)
@@ -29,7 +30,7 @@ const SliderFilter = () => {
         <div className="slider-demo">
             <div className="card">
                 <div>Range: [{first}, {second}]</div>
-                <Slider value={value} disabled={isLoading === "loading"}
+                <Slider value={value} disabled={isLoading === Status.LOADING}
                         onChange={(e) => setValue(e.value)} range/>
             </div>
         </div>

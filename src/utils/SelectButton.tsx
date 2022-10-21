@@ -5,8 +5,9 @@ import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../main/bll/store";
 import {setPacksParams} from "../main/bll/packsReducer";
 import {useUpdateEffect} from "ahooks/es";
+import {Status} from "../main/bll/appReducer";
 
-const SelectButt = () => {
+const SelectButt: React.FC = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const params = useAppSelector(state => state.packs.getPacksParams)
@@ -31,7 +32,7 @@ const SelectButt = () => {
     return (
         <div>
             <div className="card">
-                <SelectButton value={value} disabled={isLoading === "loading"} options={options}
+                <SelectButton value={value} disabled={isLoading === Status.LOADING} options={options}
                               onChange={(e: { value: string }) => setValue(e.value)}/>
             </div>
         </div>

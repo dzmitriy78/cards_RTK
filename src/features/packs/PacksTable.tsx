@@ -5,9 +5,9 @@ import {deletePackTC, updatePackTC} from "../../main/bll/packsReducer";
 import {useDispatch} from "react-redux";
 import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {Button} from "primereact/button";
-import {setIsLoadingAC} from "../../main/bll/appReducer";
+import {setIsLoadingAC, Status} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
-import {CARDS_PATH, LEARN_PATH} from "../../main/Routing";
+import {CARDS_PATH, LEARN_PATH} from "../../main/ui/Routing";
 import {getCardsTC, setCardsPack} from "../../main/bll/cardsReducer";
 import moment from "moment";
 import Confirm from "../../utils/ConfirmDialog";
@@ -17,7 +17,7 @@ import defaultCover from "../../assets/defaultCover.png";
 import noCover from "../../assets/No_Cover.png";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
-const PacksTable = () => {
+const PacksTable: React.FC = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const cardPacks = useAppSelector(state => state.packs.cardPacks)
@@ -46,7 +46,7 @@ const PacksTable = () => {
         const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
 
         const errorImgHandler = () => {
-            dispatch(setIsLoadingAC({isLoading: "failed"}))
+            dispatch(setIsLoadingAC({isLoading: Status.ERROR}))
             setIsCoverBroken(true)
         }
         return (
@@ -54,7 +54,7 @@ const PacksTable = () => {
                 <Button icon="pi pi-book"
                         className="p-button-rounded p-button-success mr-2"
                         title={"learn"}
-                        disabled={isLoading === "loading" || rowData.cardsCount === 0}
+                        disabled={isLoading === Status.LOADING || rowData.cardsCount === 0}
                         onClick={() => {
                             dispatch(getCardsTC({data: {...params, cardsPack_id: rowData._id}}))
                             dispatch(setCardsPack({data: currentPack[0]}))
@@ -66,7 +66,7 @@ const PacksTable = () => {
                     && <Modal icon={"pi pi-pencil"}
                               className="p-button-rounded p-button-success mr-2"
                               title={`Edit pack "${currentPack[0].name}"`}
-                              disabled={isLoading === "loading"}
+                              disabled={isLoading === Status.LOADING}
                               callback={() => onUpdatePack(rowData._id)}>
                         <form>
                             <div style={{display: "flex", justifyContent: "center"}}>
@@ -104,7 +104,7 @@ const PacksTable = () => {
                                         <div> All card will be deleted.</div>
                                     </>
                                 }
-                                disabled={isLoading === "loading"}
+                                disabled={isLoading === Status.LOADING}
                                 callback={() => onDeletePack(rowData._id)}
                     />
                 }
@@ -115,7 +115,7 @@ const PacksTable = () => {
         const currentPack = cardPacks.filter((c) => c._id === rowData._id)
         return (
             <div style={{width: '25vw', overflow: 'hidden', cursor: "pointer"}} onClick={() => {
-                if (isLoading !== "loading") {
+                if (isLoading !== Status.LOADING) {
                     dispatch(getCardsTC({data: {...params, cardsPack_id: rowData._id}}))
                     dispatch(setCardsPack({data: currentPack[0]}))
                     navigate(CARDS_PATH)

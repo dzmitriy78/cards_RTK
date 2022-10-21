@@ -1,15 +1,15 @@
 import {registerAPI, UpdatedUserType} from "../dal/authAPI";
 import {errorHandler} from "../../utils/errorHandler";
 import {setAuthUserData} from "./loginReducer";
-import {setIsLoadingAC} from "./appReducer";
+import {setIsLoadingAC, Status} from "./appReducer";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 export const updateUserTC = createAsyncThunk("profile/profile", async (arg: { name: string, avatar: string }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         const res = await registerAPI.updateUser(arg.name, arg.avatar)
         thunkAPI.dispatch(setAuthUserData({data: {isAuth: true, userData: res.data.updatedUser}}))
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return res.data
     } catch (e: any) {
         errorHandler(e, thunkAPI.dispatch)

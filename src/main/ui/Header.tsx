@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 import {NavLink, useNavigate} from "react-router-dom"
 import {FORGOT_PATH, LOGIN_PATH, PACKS_PATH, PROFILE_PATH, REGISTER_PATH} from "./Routing"
-import cl from "../styles/Header.module.scss"
-import {logoutTC} from "./bll/loginReducer"
+import cl from "../../styles/Header.module.scss"
+import {logoutTC} from "../bll/loginReducer"
 import {useDispatch} from "react-redux"
-import {DispatchType, useAppSelector} from "./bll/store"
+import {DispatchType, useAppSelector} from "../bll/store"
 import {Button} from "primereact/button"
 
 
-const Header = () => {
+const Header: React.FC = () => {
 
     const isAuth = useAppSelector((state) => state.login.isAuth)
     const navigate = useNavigate()

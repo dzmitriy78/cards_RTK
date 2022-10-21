@@ -2,7 +2,7 @@ import React from 'react';
 import Header from "./Header";
 import Routing from "./Routing";
 
-const Main = () => {
+const Main: React.FC = () => {
     return (
         <div>
             <Header/>

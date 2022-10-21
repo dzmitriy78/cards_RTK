@@ -65,7 +65,7 @@ export type GetPacksParamsType = {
     pageCount: number
     user_id: string
 }
-export type GetPacksResponseType = {
+type GetPacksResponseType = {
     cardPacks: [CardPacksType]
     page: number
     pageCount: number
@@ -75,7 +75,7 @@ export type GetPacksResponseType = {
     token: string
     tokenDeathTime: number
 }
-export type CreatePacksResponseType = {
+type CreatePacksResponseType = {
     newCardsPack: CardPacksType
     token: string
     tokenDeathTime: number
@@ -140,7 +140,7 @@ export type GetCardsParamsType = {
     page: number
     pageCount: number
 }
-export type GetCardsResponseType = {
+type GetCardsResponseType = {
     cards: [CardsType]
     packUserId: string
     page: number
@@ -166,7 +166,7 @@ export type CreateCardsType = {
         type?: string
     }
 }
-export type CreateCardResponseType = {
+type CreateCardResponseType = {
     newCard: CardsType
     token: string
     tokenDeathTime: number
@@ -184,7 +184,7 @@ export type UpdateCardParamsType = {
         comments?: string
     }
 }
-export type UpdateCardsResponseType = {
+type UpdateCardsResponseType = {
     updatedCard: CardsType
     token: string
     tokenDeathTime: number

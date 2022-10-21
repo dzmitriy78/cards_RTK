@@ -1,13 +1,13 @@
 import {registerAPI} from "../dal/authAPI";
 import {errorHandler} from "../../utils/errorHandler";
-import {setIsLoadingAC} from "./appReducer";
+import {setIsLoadingAC, Status} from "./appReducer";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 export const forgotPasswordTC = createAsyncThunk("forgot/forgot", async (arg: { email: string }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         const data = await registerAPI.forgot(arg.email)
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return {info: data.data.info, error: data.data.error}
     } catch (e: any) {
         errorHandler(e, thunkAPI.dispatch)

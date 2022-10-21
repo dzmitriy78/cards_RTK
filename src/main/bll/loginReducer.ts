@@ -1,25 +1,25 @@
 import {authAPI, LoginParamsType, UserDataType} from "../dal/authAPI"
 import {errorHandler} from "../../utils/errorHandler";
-import {setIsLoadingAC} from "./appReducer";
+import {setIsLoadingAC, Status} from "./appReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export const authMe = createAsyncThunk("login/authMe", async (arg, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
     const data = await authAPI.me()
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return {isAuth: true, userData: data.data}
     } catch (e: any) {
-        thunkAPI.dispatch(setIsLoadingAC({isLoading:'failed'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.ERROR}))
         return thunkAPI.rejectWithValue(null)
     }
 })
 export const loginTC = createAsyncThunk("login/login", async (arg: { data: LoginParamsType }, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         const res = await authAPI.login(arg.data)
         if (!res.data.error)
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return {isAuth: true, userData: res.data}
     } catch (e: any) {
         errorHandler(e, thunkAPI.dispatch)
@@ -27,10 +27,10 @@ export const loginTC = createAsyncThunk("login/login", async (arg: { data: Login
     }
 })
 export const logoutTC = createAsyncThunk("login/logout", async (arg, thunkAPI) => {
-    thunkAPI.dispatch(setIsLoadingAC({isLoading: 'loading'}))
+    thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.LOADING}))
     try {
         await authAPI.logout()
-        thunkAPI.dispatch(setIsLoadingAC({isLoading: 'succeeded'}))
+        thunkAPI.dispatch(setIsLoadingAC({isLoading: Status.SUCCESS}))
         return {
             isAuth: false,
             userData: {

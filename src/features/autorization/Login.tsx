@@ -5,15 +5,16 @@ import {loginTC} from "../../main/bll/loginReducer";
 import {useDispatch} from "react-redux";
 import {NavLink} from "react-router-dom";
 import {DispatchType, useAppSelector} from "../../main/bll/store";
-import {FORGOT_PATH, REGISTER_PATH} from "../../main/Routing";
-import Loader from "../../main/ui/Loader";
+import {FORGOT_PATH, REGISTER_PATH} from "../../main/ui/Routing";
+import Loader from "../../utils/Loader";
 import Welcome from "../../main/ui/Welcome";
 import {InputText} from "primereact/inputtext";
 import {Checkbox} from "primereact/checkbox";
 import {Button} from "primereact/button";
 import {Password} from "primereact/password";
+import {Status} from "../../main/bll/appReducer";
 
-const Login = () => {
+const Login: React.FC = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const isAuth = useAppSelector((state) => state.login.isAuth)
@@ -43,7 +44,7 @@ const Login = () => {
     })
 
     return <>
-        {isLoading === 'loading' && <Loader/>}
+        {isLoading === Status.LOADING && <Loader/>}
         {isAuth && <Welcome/>}
         {!isAuth &&
             <div>
@@ -73,7 +74,7 @@ const Login = () => {
                               {...formik.getFieldProps("rememberMe")}
                               checked={formik.values.rememberMe}
                     />
-                    <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Sign in</Button>
+                    <Button type={'submit'} className={cl.button} disabled={isLoading === Status.LOADING}>Sign in</Button>
                 </form>
                 <div className={cl.description}>Forgot your password? <br/>
                     <NavLink to={FORGOT_PATH}>Restore password</NavLink>

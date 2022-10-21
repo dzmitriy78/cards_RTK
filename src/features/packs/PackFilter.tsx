@@ -4,7 +4,7 @@ import SelectButt from "../../utils/SelectButton";
 import SliderFilter from "../../utils/SliderFilter";
 import SearchInput from "../../utils/SearchInput";
 
-const PackFilter = () => {
+const PackFilter: React.FC = () => {
 
     return (
         <div className={cl.filterWrapper}>

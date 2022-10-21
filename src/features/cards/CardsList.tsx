@@ -11,8 +11,9 @@ import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {InputTextarea} from "primereact/inputtextarea";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
+import {Status} from "../../main/bll/appReducer";
 
-const CardsList = () => {
+const CardsList: React.FC = () => {
     const dispatch = useDispatch<DispatchType>()
     const isLoading = useAppSelector(state => state.app.isLoading)
     const cards = useAppSelector(state => state.cards.cards)
@@ -39,7 +40,7 @@ const CardsList = () => {
                     ? <Modal icon={"pi pi-pencil"}
                              className="p-button-rounded p-button-success mr-2"
                              title={"Edit card"}
-                             disabled={isLoading === "loading"}
+                             disabled={isLoading === Status.LOADING}
                              callback={() => onUpdateCard(rowData._id)}>
                         <form>
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Question:</span>
@@ -69,7 +70,7 @@ const CardsList = () => {
                                className="p-button-rounded p-button-warning"
                                title={""}
                                message={"Are you sure you want to remove this card?"}
-                               disabled={isLoading === "loading"}
+                               disabled={isLoading === Status.LOADING}
                                callback={() => onDeleteCard(rowData._id)}
                     />
                     : ""

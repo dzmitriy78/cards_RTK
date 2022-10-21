@@ -4,14 +4,15 @@ import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {useFormik} from "formik";
 import cl from "../../styles/Login.module.scss";
 import {setNewPasswordTC} from "../../main/bll/setNewPasswordReducer";
-import Loader from "../../main/ui/Loader";
+import Loader from "../../utils/Loader";
 import {useNavigate, useParams} from "react-router-dom";
-import {LOGIN_PATH} from "../../main/Routing";
+import {LOGIN_PATH} from "../../main/ui/Routing";
 import {InputText} from "primereact/inputtext";
 import {Password} from "primereact/password";
 import {Button} from "primereact/button";
+import {Status} from "../../main/bll/appReducer";
 
-const SetNewPassword = () => {
+const SetNewPassword: React.FC = () => {
     const info = useAppSelector(state => state.setNewPassword.info)
     const isLoading = useAppSelector((state) => state.app.isLoading)
     const dispatch = useDispatch<DispatchType>()
@@ -39,8 +40,7 @@ const SetNewPassword = () => {
     }, 4000)
 
     return <>
-        {isLoading === 'loading' && <Loader/>}
-
+        {isLoading === Status.LOADING && <Loader/>}
         <div className={cl.description}>To restore access, enter a new password</div>
         <form className={cl.form} onSubmit={formik.handleSubmit}>
             <label className={cl.description}>Password:</label>
@@ -54,7 +54,7 @@ const SetNewPassword = () => {
                        type={"hidden"}
                        {...formik.getFieldProps("resetPasswordToken")}
             />
-            <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Send</Button>
+            <Button type={'submit'} className={cl.button} disabled={isLoading === Status.LOADING}>Send</Button>
         </form>
     </>
 }

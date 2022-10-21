@@ -1,6 +1,13 @@
 import {authMe} from "./loginReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
+export enum Status {
+    IDLE = 'idle',
+    LOADING = 'loading',
+    SUCCESS = 'succeeded',
+    ERROR = 'failed'
+}
+
 export const initializeAppTC = createAsyncThunk("app/initialize", async (arg, thunkAPI) => {
     try {
         await thunkAPI.dispatch(authMe())
@@ -13,12 +20,12 @@ export const initializeAppTC = createAsyncThunk("app/initialize", async (arg, th
 const slice = createSlice({
     name: "app",
     initialState: {
-        isLoading: 'idle',
+        isLoading: Status.IDLE,
         isInitialized: false,
         error: null
     } as appInitialStateType,
     reducers: {
-        setIsLoadingAC: (state, action: PayloadAction<{ isLoading: RequestLoadingType }>) => {
+        setIsLoadingAC: (state, action: PayloadAction<{ isLoading:Status }>) => {
             state.isLoading = action.payload.isLoading
         },
         setError: (state, action: PayloadAction<{ error: string | null }>) => {
@@ -36,10 +43,8 @@ export const appReducer = slice.reducer
 
 export const {setIsLoadingAC, setError} = slice.actions
 
-export type RequestLoadingType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
 export type appInitialStateType = {
-    isLoading: RequestLoadingType,
+    isLoading: Status,
     isInitialized: boolean,
     error: null | string
 }

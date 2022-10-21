@@ -5,10 +5,11 @@ import {useFormik} from "formik";
 import {useNavigate} from "react-router-dom";
 import cl from "../../styles/Login.module.scss";
 import {registerTC} from "../../main/bll/registerReducer";
-import Loader from "../../main/ui/Loader";
+import Loader from "../../utils/Loader";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {Password} from "primereact/password";
+import {Status} from "../../main/bll/appReducer";
 
 const Register: React.FC = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -39,7 +40,7 @@ const Register: React.FC = () => {
     })
 
     return <div>
-        {isLoading === 'loading' && <Loader/>}
+        {isLoading === Status.LOADING && <Loader/>}
         <div className={cl.description}>To register, enter your e-mail
             <br/>and create a password <br/>(at least 7 characters)
         </div>
@@ -60,7 +61,7 @@ const Register: React.FC = () => {
             {formik.touched.password && formik.errors.password
                 ? <div style={{color: "red"}}>{formik.errors.password}</div>
                 : null}
-            <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Register</Button>
+            <Button type={'submit'} className={cl.button} disabled={isLoading === Status.LOADING}>Register</Button>
         </form>
     </div>
 }

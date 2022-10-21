@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useAppSelector} from "../bll/store"
 import {useNavigate} from "react-router-dom"
-import {PROFILE_PATH} from "../Routing"
+import {PROFILE_PATH} from "./Routing"
 import cl from "../../styles/Login.module.scss"
 
 const Welcome = () => {

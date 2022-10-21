@@ -6,13 +6,14 @@ import {createCardTC} from "../../main/bll/cardsReducer";
 import CardsList from "./CardsList";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom";
-import {PACKS_PATH} from "../../main/Routing";
+import {PACKS_PATH} from "../../main/ui/Routing";
 import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {InputTextarea} from "primereact/inputtextarea";
-import Loader from "../../main/ui/Loader";
+import Loader from "../../utils/Loader";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 import defaultCover from "../../assets/defaultCover.png";
+import {Status} from "../../main/bll/appReducer";
 
 const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -38,7 +39,7 @@ const Cards = () => {
     }
     return (
         <>
-            {isLoading === 'loading' && <Loader/>}
+            {isLoading === Status.LOADING && <Loader/>}
             <div className={cl.header}>
                 <Button type="button" icon="pi pi-arrow-left"
                         className="p-button-text"
@@ -59,7 +60,7 @@ const Cards = () => {
                                  title={"Add new card"}
                                  icon={"pi pi-plus-circle"}
                                  className={""}
-                                 disabled={isLoading === "loading"}>
+                                 disabled={isLoading === Status.LOADING}>
                             <form>
                                 <label htmlFor="question">Question</label>
                                 <span>

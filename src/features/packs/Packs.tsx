@@ -7,14 +7,15 @@ import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {addPackTC, getPacksTC} from "../../main/bll/packsReducer";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom";
-import {LOGIN_PATH, PROFILE_PATH} from "../../main/Routing";
+import {LOGIN_PATH, PROFILE_PATH} from "../../main/ui/Routing";
 import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
-import Loader from "../../main/ui/Loader";
+import Loader from "../../utils/Loader";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 import noCover from "../../assets/No_Cover.png";
+import {Status} from "../../main/bll/appReducer";
 
-const Packs = () => {
+const Packs: React.FC = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const navigate = useNavigate()
@@ -41,7 +42,7 @@ const Packs = () => {
 
     return (
         <>
-            {isLoading === 'loading' && <Loader/>}
+            {isLoading === Status.LOADING && <Loader/>}
             <div className={cl.header}>
                 <Button type="button" icon="pi pi-arrow-left"
                         className="p-button-text"
@@ -54,7 +55,7 @@ const Packs = () => {
                        title={"Add new pack"}
                        icon={"pi pi-plus-circle"}
                        className={""}
-                       disabled={isLoading === "loading"}>
+                       disabled={isLoading === Status.LOADING}>
 
                     <form>
                         <div style={{display: "flex", justifyContent: "center"}}>

@@ -6,8 +6,9 @@ import {Button} from "primereact/button";
 import {DispatchType, useAppSelector} from "../../main/bll/store";
 import {CardsType} from "../../main/dal/packsAPI";
 import {changeGradeTC} from "../../main/bll/cardsReducer";
-import {CARDS_PATH} from "../../main/Routing";
-import Loader from "../../main/ui/Loader";
+import {CARDS_PATH} from "../../main/ui/Routing";
+import Loader from "../../utils/Loader";
+import {Status} from "../../main/bll/appReducer";
 
 const grades = ['did not know', 'forgot', 'long thought', 'confused', 'knew'];
 
@@ -24,7 +25,7 @@ const getCard = (cards: CardsType[]) => {
     return cards[res.id + 1]
 }
 
-const LearnPage = () => {
+const LearnPage: React.FC = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<DispatchType>()
@@ -71,7 +72,7 @@ const LearnPage = () => {
 
     return (
         <>
-            {isLoading === 'loading' && <Loader/>}
+            {isLoading === Status.LOADING && <Loader/>}
             <div className={cl.header}>
                 <Button type="button"
                         icon="pi pi-arrow-left"
@@ -117,7 +118,7 @@ const LearnPage = () => {
                     </div>
                     <div className={cl.grade}>
                         {grades.map((g, i) => (
-                            <Button key={'grade-' + i} disabled={isLoading === "loading"}
+                            <Button key={'grade-' + i} disabled={isLoading === Status.LOADING}
                                     onClick={() => {
                                         dispatch(changeGradeTC({data: {grade: i + 1, card_id: card._id}}))
                                         onNext()
